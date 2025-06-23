@@ -12,7 +12,6 @@ format:
 
 Let us consider an epidemiological process that is characterised by a discrete distribution $f_d$.
 
-
 **Example:**
 
 $f_d$: Probability of having incubation period of $d$ days.
@@ -45,28 +44,28 @@ We can use convolutions with the delay distribution that applies at the *individ
 
 ## Why use a convolution, not individual delays?
 
-- we don't always have individual data available
-- we often model other processes at the population level (such as transmission) and so being able to model delays on the same scale is useful
-- doing the computation at the population level requires fewer calculations (i.e. is faster)
+-   we don't always have individual data available
+-   we often model other processes at the population level (such as transmission) and so being able to model delays on the same scale is useful
+-   doing the computation at the population level requires fewer calculations (i.e. is faster)
 
 ::: {.fragment .fade-in}
-- **however, a downside is that we won't have realistic uncertainty, especially if the number of individuals is small**
+-   **however, a downside is that we won't have realistic uncertainty, especially if the number of individuals is small**
 :::
 
 ## What if $f$ is continuous?
 
 Having moved to the population level, we can't estimate individual-level event times any more.
 
-Instead, we *discretise* the distribution (remembering that it is **double censored** - as both events are censored). 
+Instead, we *discretise* the distribution (remembering that it is **double censored** - as both events are censored).
 
 This can be solved mathematically but in the session we will use simulation.
 
 ## `r fontawesome::fa("laptop-code", "white")` Your Turn {background-color="#447099" transition="fade-in"}
 
-- Simulate convolutions with infection counts
-- Discretise continuous distributions
-- Estimate parameters numbers of infections from number of symptom onsets, using a convolution model
+-   Simulate convolutions with infection counts
+-   Discretise continuous distributions
+-   Estimate parameters numbers of infections from number of symptom onsets, using a convolution model
 
-#
+# 
 
 [Return to the session](../biases-in-delay-distributions)

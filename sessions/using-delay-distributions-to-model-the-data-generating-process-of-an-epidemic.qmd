@@ -6,22 +6,29 @@ bibliography: ../nfidd.bib
 
 # Introduction
 
-We've now developed a good idea of how epidemiological time delays affect our understanding of an evolving outbreak. So far, we've been working with individual line-list data. However, we usually want to model how an outbreak evolves through a whole population. The aim of this session is to introduce how delay distributions can be used to model population-level data generating process during an epidemic. 
+We've now developed a good idea of how epidemiological time delays affect our understanding of an evolving outbreak.
+So far, we've been working with individual line-list data.
+However, we usually want to model how an outbreak evolves through a whole population.
+The aim of this session is to introduce how delay distributions can be used to model population-level data generating process during an epidemic.
 
-This means working with aggregated count data. This creates some new issues in correctly accounting for uncertainty. We handle population-level data using *convolutions* as a way of combining count data with a distribution of individual probabilities. We will have to adjust our continuous probability distributions to work with this using *discretisation*. We'll then need to re-introduce additional uncertainty to account for the observation process at a population level.
+This means working with aggregated count data.
+This creates some new issues in correctly accounting for uncertainty.
+We handle population-level data using *convolutions* as a way of combining count data with a distribution of individual probabilities.
+We will have to adjust our continuous probability distributions to work with this using *discretisation*.
+We'll then need to re-introduce additional uncertainty to account for the observation process at a population level.
 
 ## Slides
 
-- [Delay distributions at the population level](slides/convolutions)
+-   [Delay distributions at the population level](slides/convolutions)
 
 ## Objectives
 
 In this session, we'll focus on the delay from infection to symptom onset at a population level.
-First, we will introduce the techniques of convolution and discretisation. We'll apply these to an aggregated time series of infections in order to simulate observed symptom onsets.
+First, we will introduce the techniques of convolution and discretisation.
+We'll apply these to an aggregated time series of infections in order to simulate observed symptom onsets.
 Then, we'll use those simulated symptom onsets to try and reconstruct a time series of infections.
 
-::: {.callout-note collapse="true"}
-
+:::: {.callout-note collapse="true"}
 # Setup
 
 ## Source file
@@ -46,7 +53,7 @@ The best way to interact with the material is via the [Visual Editor](https://do
 
 ## Initialisation
 
-We set a random seed for reproducibility. 
+We set a random seed for reproducibility.
 Setting this ensures that you should get exactly the same results on your computer as we do.
 We also set an option that makes `cmdstanr` show line numbers when printing model code.
 This is not strictly necessary but will help us talk about the models.
@@ -55,8 +62,7 @@ This is not strictly necessary but will help us talk about the models.
 set.seed(123)
 options(cmdstanr_print_line_numbers = TRUE)
 ```
-
-:::
+::::
 
 # Simulating observations from a time series of infections
 
@@ -107,9 +113,9 @@ However, if we want to use the gamma distribution with shape 5 and rate 1 as bef
 The gamma distribution is a *continuous* distribution, but now our delay data are in days which are *discrete* entities.
 We will assume that both events that make up the delay (here infection and symptom onset) are observed as daily counts (e.g. as number of infections/symptom onsets by calendar date).
 Therefore, both observations are **censored** (as events are rounded to the nearest date).
-This means that our distribution is **double interval censored** which we encountered in the [the biases in delay distribution session](sessions/biases-in-delay-distributions), so we need to use the same ideas introduced in that session. 
+This means that our distribution is **double interval censored** which we encountered in the [the biases in delay distribution session](sessions/biases-in-delay-distributions), so we need to use the same ideas introduced in that session.
 
-::: {.callout-note collapse=true}
+::: {.callout-note collapse="true"}
 #### Mathematical Definition (optional): Discretising a delay distribution subject to double interval censoring
 
 The cumulative distribution function (CDF) ($F(t)$) of a distribution that has a daily censored primary event can be expressed as,
@@ -224,7 +230,9 @@ ggplot(combined, aes(x = time, y = reported_onsets)) +
 
 # Estimating a time series of infections
 
-As in previous sessions, we don't usually have data on infections. We now create a model that uses symptom onsets to estimate the number of infections over time. We'll base the model on an uninformed prior and work forward from what we know about the observation process.
+As in previous sessions, we don't usually have data on infections.
+We now create a model that uses symptom onsets to estimate the number of infections over time.
+We'll base the model on an uninformed prior and work forward from what we know about the observation process.
 
 ```{r stan_estimate_infections}
 mod <- nfidd_cmdstan_model("estimate-infections")
@@ -320,14 +328,12 @@ This is particularly useful when dealing with arrays such as `inference` because
 
 ## Methods in practice
 
--   The [`primarycensored`](https://github.com/epinowcast/primarycensored) package provides tools for efficiently working with censored and truncated delay distributions.
-    It offers both theoretical background on primary and secondary interval censoring and right truncation, as well as practical functions for estimating and using these distributions.
-    The package implements deterministic methods that are significantly faster than the Monte Carlo approach used in `censored_delay_pmf()` while providing exact results.
+-   The [`primarycensored`](https://github.com/epinowcast/primarycensored) package provides tools for efficiently working with censored and truncated delay distributions. It offers both theoretical background on primary and secondary interval censoring and right truncation, as well as practical functions for estimating and using these distributions. The package implements deterministic methods that are significantly faster than the Monte Carlo approach used in `censored_delay_pmf()` while providing exact results.
 
 # Wrap up
 
-- Review what you've learned in this session with the [learning objectives](reference/learning_objectives)
-- Share your [questions and thoughts](reference/help)
+-   Review what you've learned in this session with the [learning objectives](reference/learning_objectives)
+-   Share your [questions and thoughts](reference/help)
 
 ## References
 

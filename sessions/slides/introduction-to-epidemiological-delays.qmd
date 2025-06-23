@@ -14,33 +14,36 @@ library("dplyr")
 library("tidyr")
 library("ggplot2")
 ```
+
 # Epidemiological delay
 
 Time between two epidemiological events
 
 ## Epidemiological events: disease progression
-- infection
-- symptom onset
-- becoming infectious
-- hospital admission
-- death
+
+-   infection
+-   symptom onset
+-   becoming infectious
+-   hospital admission
+-   death
 
 ## Epidemiological events: recovery
-- pathogen clearance
-- symptoms clearance
-- end of infectiousness
-- discharge from hospital
+
+-   pathogen clearance
+-   symptoms clearance
+-   end of infectiousness
+-   discharge from hospital
 
 ## Epidemiological events: control
 
-- quarantine
-- isolation
-- treatment
+-   quarantine
+-   isolation
+-   treatment
 
 ## Epidemiological events: reporting
 
-- specimen taken
-- report added to database
+-   specimen taken
+-   report added to database
 
 ## Some delays have names
 
@@ -106,26 +109,24 @@ hospital *admission* to *discharge*
 
 ## Key elements of infectious disease epidemiology {.smaller}
 
-![](figures/nishiura2007.png)
-[Nishiura et al., 2007](https://doi.org/10.1186/1742-7622-4-2)
+![](figures/nishiura2007.png) [Nishiura et al., 2007](https://doi.org/10.1186/1742-7622-4-2)
 
 ## Why do we want to know these?
 
-- Key elements of infectious disease epidemiology
-- Intricate relationship with nowcasting/forecasting
+-   Key elements of infectious disease epidemiology
+-   Intricate relationship with nowcasting/forecasting
 
 ## Quantifying delays
 
-- Epidemiological delays are *variable*
-- We can capture their variability using probability distributions
+-   Epidemiological delays are *variable*
+-   We can capture their variability using probability distributions
 
-## Warning: Two levels of uncertainty {background-color="#000000" transition="fade-in" .smaller}
+## Warning: Two levels of uncertainty {.smaller background-color="#000000" transition="fade-in"}
 
-- Probability distributions characterise variability in the delays *between individuals*
-- *Parameters* of the probability distribution can be uncertain
+-   Probability distributions characterise variability in the delays *between individuals*
+-   *Parameters* of the probability distribution can be uncertain
 
-:::: {.columns}
-
+::::: columns
 ::: {.column width="40%"}
 $$
 \alpha \sim \mathrm{Normal}(mean = 5, sd = 0.1) \\
@@ -133,7 +134,6 @@ $$
 $$
 
 Showing probability density functions of lognormal distributions with shape $\alpha$ and rate $\beta$.
-
 :::
 
 ::: {.column width="60%"}
@@ -158,14 +158,13 @@ ggplot(df, aes(x = x, y = density, group = id)) +
   geom_line(alpha = 0.3)
 ```
 :::
-
-::::
+:::::
 
 ## `r fontawesome::fa("laptop-code", "white")` Your Turn {background-color="#447099" transition="fade-in"}
 
-- Simulate epidemiological delays
-- Estimate parameters of a delay distribution
+-   Simulate epidemiological delays
+-   Estimate parameters of a delay distribution
 
-#
+# 
 
 [Return to the session](../delay-distributions)

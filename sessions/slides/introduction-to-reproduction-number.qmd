@@ -73,6 +73,6 @@ We can estimate $R_t$ from a time series of infections using the renewal equatio
 -   Estimate reproduction numbers using a time series of infections
 -   Combine with delay distributions to jointly infer infections and R from a time series of outcomes
 
-#
+# 
 
 [Return to the session](../R-estimation-and-the-renewal-equation)

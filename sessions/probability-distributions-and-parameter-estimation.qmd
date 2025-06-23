@@ -6,9 +6,14 @@ bibliography: ../nfidd.bib
 
 # Introduction
 
-Many important characteristics, or parameters, of epidemiological processes are not fully observed - and are therefore uncertain. For example, in this course this might include time delays, reproduction numbers, or case numbers now and in the future. We can specify the shape of uncertainty around a specific parameter using a probability distribution. 
+Many important characteristics, or parameters, of epidemiological processes are not fully observed - and are therefore uncertain.
+For example, in this course this might include time delays, reproduction numbers, or case numbers now and in the future.
+We can specify the shape of uncertainty around a specific parameter using a probability distribution.
 
-We'll want to correctly specify this uncertainty. We can do this best by combining our own prior understanding with the data that we have available. In this course, we'll use this Bayesian approach to modelling. A useful tool for creating these models is the `stan` probabilistic programming language. 
+We'll want to correctly specify this uncertainty.
+We can do this best by combining our own prior understanding with the data that we have available.
+In this course, we'll use this Bayesian approach to modelling.
+A useful tool for creating these models is the `stan` probabilistic programming language.
 
 ## Slides
 
@@ -18,8 +23,7 @@ We'll want to correctly specify this uncertainty. We can do this best by combini
 
 The aim of this session is to introduce the concept of probability distributions and how to estimate their parameters using Bayesian inference with `stan`.
 
-::: {.callout-note collapse="true"}
-
+:::: {.callout-note collapse="true"}
 # Setup
 
 ## Source file
@@ -38,7 +42,7 @@ library("bayesplot")
 library("posterior")
 ```
 
-::: {.callout-tip}
+::: callout-tip
 The best way to interact with the material is via the [Visual Editor](https://docs.posit.co/ide/user/ide/guide/documents/visual-editor.html) of RStudio.
 :::
 
@@ -53,8 +57,7 @@ This is not strictly necessary but will help us talk about the models.
 set.seed(123)
 options(cmdstanr_print_line_numbers = TRUE)
 ```
-
-:::
+::::
 
 # Simulating data from a probability distribution
 
@@ -126,16 +129,18 @@ mod <- nfidd_cmdstan_model("gamma")
 mod
 ```
 
-::: {.callout-tip}
+::: callout-tip
 ### Arrays in stan
+
 On line 4 there is a data declaration starting with `array[n]`.
 This declares an array of size `n` of the type given afterwards (here: `real`).
 Arrays work in a similar way as arrays or vectors in R and its elements be accessed with the bracket operator `[`.
 For example, to get the third element of the array `y` you would write `y[3]`.
 :::
 
-::: {.callout-tip}
+::: callout-tip
 ### Take 5 minutes
+
 Familarise yourself with the model above.
 Do you understand all the lines?
 Which line(s) define the parameter prior distribution(s), which one(s) the likelihood, and which one(s) the data that has to be supplied to the model?
@@ -143,8 +148,9 @@ Which line(s) define the parameter prior distribution(s), which one(s) the likel
 
 ::: {.callout-note collapse="true"}
 ### Solution
+
 Lines 13 and 14 define the parametric prior distributions (for parameters alpha and beta).
-The additional qualifier `T[0,]` specifies that the distribution should be _truncated_ with a lower bound of zero (because the alpha and beta parameters of the gamma distribution have to be nonnegative).
+The additional qualifier `T[0,]` specifies that the distribution should be *truncated* with a lower bound of zero (because the alpha and beta parameters of the gamma distribution have to be nonnegative).
 Line 15 defines the likelihood.
 Lines 3 and 4 define the data that has to be supplied to the model.
 :::
@@ -152,8 +158,9 @@ Lines 3 and 4 define the data that has to be supplied to the model.
 We use the model we have defined in conjunction with the gamma distributed random numbers generated earlier to see if we can recover the parameters of the gamma distribution used.
 Once you have familiarised yourself with the model, we will use the `nfidd_sample()` function to fit the model.
 
-::: {.callout-tip}
+::: callout-tip
 ### `nfidd_sample()`
+
 The `nfidd_sample()` function is a wrapper around the `cmdstanr` `sample()` method.
 It provides sensible defaults for the course and simplifies the syntax.
 In particular, we are generating 500 samples instead of the default of 1000 to make the models run faster.
@@ -170,15 +177,17 @@ stan_data <- list(
 gamma_fit <- nfidd_sample(mod, data = stan_data)
 ```
 
-::: {.callout-note}
+::: callout-note
 ### Passing data to the stan model
+
 The `stan_data` object is a list with elements that will is passed to the stan model as the `data` argument to `sample`.
 The names and types of the elements need to correspond to the data block in the model (see lines 3 and 4 in the model).
 Here, we pass the length of `gammas` as `N` and the vector `gammas` itself as `y`.
 :::
 
-::: {.callout-note}
+::: callout-note
 ### Stan messages
+
 The `nfidd_sample` command will produce a lot of messages which we have suppressed above.
 This is fine and intended to keep the user informed about any issues as well as general progress with the inference.
 This will come in handy later in the course when we fit more complicated models that can take a little while to run.
@@ -215,25 +224,20 @@ We can see that the random numbers generated from the posterior samples are dist
 
 ## Challenge
 
-- For the model above we chose truncated normal priors with a mode at 0 and standard deviation 10. If you change the parameters of the prior distributions, does it affect the results?
-- You could try the model included in `lognormal.stan` to estimate parameters of the lognormal distribution.
+-   For the model above we chose truncated normal priors with a mode at 0 and standard deviation 10. If you change the parameters of the prior distributions, does it affect the results?
+-   You could try the model included in `lognormal.stan` to estimate parameters of the lognormal distribution.
 
 ## Methods in practice
 
-- In this course we are building an intuition for the epidemiological processes and uncertainties that underlie typical surveillance data. 
-We'll continue to work in `stan` to build up from simple to more complex models based on our understanding of these data-generating processes. 
-In practice, you might also want to consider other available tools and/or methods. 
-This can be a trade-off: on one hand, adopting an off-the-shelf tool loses the flexibility of a custom approach that is customised to a specific epidemiological context. 
-On the other hand, using available tools avoids duplicated effort, might improve the chances of finding errors, and enables discussing and ultimately enforcing best practice in a rapidly developing field.
-- Throughout the course, we'll suggest some examples of available tools, methods, and best practices for you to consider. We encourage you to choose a strategy for model building that's most appropriate for your context.
+-   In this course we are building an intuition for the epidemiological processes and uncertainties that underlie typical surveillance data. We'll continue to work in `stan` to build up from simple to more complex models based on our understanding of these data-generating processes. In practice, you might also want to consider other available tools and/or methods. This can be a trade-off: on one hand, adopting an off-the-shelf tool loses the flexibility of a custom approach that is customised to a specific epidemiological context. On the other hand, using available tools avoids duplicated effort, might improve the chances of finding errors, and enables discussing and ultimately enforcing best practice in a rapidly developing field.
+-   Throughout the course, we'll suggest some examples of available tools, methods, and best practices for you to consider. We encourage you to choose a strategy for model building that's most appropriate for your context.
 
 # Wrap up
 
-- Review what you've learned in this session with the [learning objectives](reference/learning_objectives)
-- Share your [questions and thoughts](reference/help)
+-   Review what you've learned in this session with the [learning objectives](reference/learning_objectives)
+-   Share your [questions and thoughts](reference/help)
 
-## References 
+## References
 
 ::: {#refs}
 :::
-
