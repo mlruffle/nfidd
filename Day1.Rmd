@@ -54,6 +54,7 @@ head(logn_posterior)
 ```
 
 Generate posterior predictive samples and plot posterior predictive check
+
 ```{r model1pred, eval=FALSE}
 
 logn_ppc <- sapply(seq_along(lognormals), function(i) { rlnorm(n = length(lognormals), meanlog = logn_posterior$meanlog[i],
@@ -63,9 +64,10 @@ ppc_dens_overlay(y = lognormals, yrep = logn_ppc)
 
 ```
 
+# Going Further Challenge 2
 
-# Going Further Challenge 2 
-## Using gamma rather than log-normal 
+## Using gamma rather than log-normal
+
 ### From delay-distributions
 
 ```{r model2, eval=FALSE}
@@ -74,6 +76,7 @@ mod <- nfidd_cmdstan_model("gamma")
 mod
 
 ```
+
 Specify the time from onset to hospitalisation
 
 ```{r model2data, eval=FALSE}
@@ -84,6 +87,7 @@ df_onset_to_hosp <- df |>
 ```
 
 Use the data to sample from the model posterior
+
 ```{r model2fit, eval=FALSE}
 
 res <- nfidd_sample(
@@ -98,26 +102,31 @@ res$summary() #lp_ values are negative
 res #ess not great
 ```
 
-
 # Simulating Censoring with Floor Division
 
-## Example: 
+## Example:
+
 Daily censoring (interval = 1)
+
 ```{r censoring1, eval=FALSE}
 times <- c(0.2, 0.8, 1.3, 1.9, 2.1, 2.7)
 censored <- floor(times / 1) * 1
 # Result: [0, 0, 1, 1, 2, 2] 
 # demonstrates why the rounding works because our real data is 'times' but we observed 'results'
 ```
+
 Weekly censoring (interval = 7)
+
 ```{r censoring7, eval=FALSE}
 days <- c(2, 8, 12, 15, 20)
 weekly_censored <- floor(days / 7) * 7
 #Result: [0, 7, 7, 14, 14]
 ```
+
 ## For censoring reporting delays:
 
 Simulate continuous delays
+
 ```{r, eval=FALSE}
 ## Simulate continuous delays
 true_delays <- rgamma(100, shape = 2, rate = 0.5)
@@ -126,6 +135,7 @@ daily_censored <- floor(true_delays / 1) * 1
 ## Apply weekly censoring
 weekly_censored <- floor(true_delays / 7) * 7
 ```
+
 Generate example data
 
 ```{r, eval=FALSE}
@@ -134,7 +144,9 @@ continuous_times <- runif(50, 0, 10)
 daily_censored <- floor(continuous_times / 1) * 1
 weekly_censored <- floor(continuous_times / 7) * 7
 ```
+
 Plot
+
 ```{r, eval=FALSE}
 data.frame(
   continuous = continuous_times,
@@ -148,9 +160,8 @@ data.frame(
   labs(title = "Effect of Different Censoring Intervals")
 ```
 
+##Example of weekly censored data Use the floor() function to round down to integers
 
-##Example of weekly censored data
-Use the floor() function to round down to integers
 ```{r, eval=FALSE}
 
 df_dates_week <- df |>
