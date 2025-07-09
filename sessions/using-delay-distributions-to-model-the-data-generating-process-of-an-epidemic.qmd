@@ -90,6 +90,7 @@ You can do this using:
 
 ```{r aggregate}
 inf_ts <- make_daily_infections(infection_times)
+write.csv(inf_ts, "/Users/jt24142/Documents/ESPIDAM/ESPIDAM/data/inf_ts", row.names = FALSE)
 ```
 
 ::: callout-note
